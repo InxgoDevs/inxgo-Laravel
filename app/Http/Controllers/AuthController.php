@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use App\Events\WelcomeNotificationEvent;
+
 
 class AuthController extends Controller
 {
@@ -46,18 +48,20 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function signin(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+   public function signin(Request $request)
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['user' => $user, 'access_token' => $token], 200);
-        }
-
-        return response()->json(['error' => 'Unauthorized'], 401);
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $token = $user->createToken('authToken')->plainTextToken;
+        event(new WelcomeNotificationEvent($user)); // Dispatch the WelcomeNotificationEvent
+        return response()->json(['user' => $user, 'access_token' => $token], 200);
     }
+
+    return response()->json(['error' => 'Unauthorized'], 401);
+}
+
 
     /**
      * Get user details API.

@@ -23,16 +23,16 @@
     <h3>All Skills</h3>
     <div class="row">
         @foreach($allSkills as $skill)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ asset('storage/' . $skill->image) }}" class="card-img-top img-fluid" alt="{{ $skill->title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $skill->title }}</h5>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ asset('storage/' . $skill->image) }}" class="card-img-top img-fluid" alt="{{ $skill->title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $skill->title }}</h5>
+<button onclick="sendJobRequest({{ $skill->id }})">Request Service</button>
+                            </div>
+                        </div>
                     </div>
-                    
-                </div>
-            </div>
-        @endforeach
+                    @endforeach
     </div>
 </div>
 
@@ -57,21 +57,11 @@
 
 <!-- Add a button or link to send a job request -->
 <button onclick="sendJobRequest()">Request Service</button>
+<!-- Include Axios library -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-    function sendJobRequest() {
-        // Make an AJAX request to the server to send the job request
-        // You can use Axios, jQuery AJAX, or any other method
-        axios.post('/send-job-request', { skill_id: 1 /* Replace with the selected skill ID */ })
-            .then(response => {
-                console.log(response.data.message);
-                // Display a success message or update the UI as needed
-            })
-            .catch(error => {
-                console.error(error);
-                // Handle errors and update the UI
-            });
-    }
+
 // Initialize the map
 function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -182,8 +172,28 @@ function fetchLiveLocation() {
 }
 
 
-
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function sendJobRequest(skillId) {
+        // Show confirmation popup
+        if (confirm('Are you sure you want to send a request for this service?')) {
+            // If user confirms, make AJAX request to send job request
+            axios.post('/send-job-request', { skill_id: skillId })
+                .then(response => {
+                    // Display success message
+                    alert('Email sent successfully');
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle errors and update the UI
+                    alert('Failed to send email. Please try again later.');
+                });
+        }
+    }
+</script>
+
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKjOHzobT8EVo_kGpLYgapvOabh-yRVzQ&libraries=places"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAdbeTaoMAEa2osUF4TnKmi5_85Ed_SZI&libraries=places&callback=initMap" async defer></script>

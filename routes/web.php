@@ -10,6 +10,10 @@ use App\Http\Controllers\ClientDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\FcmTokenController;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Auth;
+
+
 
 
 /*
@@ -82,14 +86,13 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
 ///Route::get('/user', [UserController::class, 'getUser'])->name('user.profile.show');
 
+Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('notifications');
+//Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
 
 Route::get('/user/profile', [UserController::class, 'showProfile'])->name('user.profile.show');
 Route::get('/user/profile/edit', [UserController::class, 'editProfile'])->name('user.profile.edit');
 Route::put('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
-
-
-Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 
 
 // Define routes for Jobs
@@ -104,4 +107,12 @@ Route::get('/jobs/assigned', [JobController::class, 'assigned'])->name('jobs.ass
 Route::get('/jobs/in_progress', [JobController::class, 'inProgress'])->name('jobs.in_progress');
 Route::get('/jobs/completed', [JobController::class, 'completed'])->name('jobs.completed');
 Route::get('/jobs/payment_being_cleared', [JobController::class, 'paymentBeingCleared'])->name('jobs.payment_being_cleared');
+
+
+
+
+Route::post('/send-job-request', [ClientDashboardController::class, 'sendJobRequest'])->name('send.job.request');
+
+
+
 

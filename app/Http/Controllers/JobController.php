@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;
+use Illuminate\Support\Facades\Auth;
+
 
 class JobController extends Controller 
 {
@@ -78,5 +80,20 @@ class JobController extends Controller
 
         return redirect()->route('jobs.index')
             ->with('success', 'Job deleted successfully.');
+    }
+
+    public function sendJobRequest(Request $request)
+    {
+        // Code to send job request...
+
+        // Create a notification feed for the job module
+        $feed = FeedManager::getNotificationFeed('job', $jobId);
+        $feed->addActivity([
+            'actor' => $userId, // User ID triggering the notification
+            'verb' => 'request_sent', // Action verb
+            'object' => $jobId, // Job ID
+        ]);
+
+        // Other code...
     }
 }

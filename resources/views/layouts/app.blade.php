@@ -19,6 +19,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
+<!-- Include Socket.IO client library -->
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 
 <!-- Add this to the <head> of your HTML file -->
 <script defer src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js"></script>
@@ -80,7 +82,7 @@
             <a class="nav-link" href="{{ route('user.profile.show') }}">Profile</a>
         </li>
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="notifications" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Notifications
         <!-- Display the count of unread notifications if needed -->
         <span id="notificationCount" class="badge badge-danger"></span>

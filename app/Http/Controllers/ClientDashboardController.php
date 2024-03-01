@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Log;
 use App\Events\NewJobRequest;
 // Import FCM
 use Brozot\LaravelFcm\Facades\Fcm;
+use GetStream\StreamLaravel\Facades\FeedManager;
+use App\Events\NewJobRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\JobRequestEmail;
+
+
 
 class ClientDashboardController extends Controller
 {
@@ -33,28 +39,30 @@ $nearbySellers = User::where('role', 'seller')->select('id', 'name', 'profile_im
 
 // In your controller where you return the view
 return view('client.dashboard', compact('allSkills', 'activeJobCards', 'mostRecentJobCard', 'nearbySellers'));
-        } else {
+        } 
+        else {
             // Redirect to the seller dashboard or handle accordingly
             return redirect()->route('seller.dashboard');
         }
     }
-    public function sendJobRequest(Request $request)
-    {
-        $client = Auth::user();
+public function sendJobRequest(Request $request)
+{
+    $skillId = $request->input('skill_id');
 
-        // Validate request, check for required fields, etc.
+    // Find sellers who have the requested skill
+    $sellers = User::whereHas('skills', function ($query) use ($skillId) {
+        $query->where('id', $skillId);
+    })->where('role', 'seller')->get();
 
-        $job = new Job();
-        $job->client_id = $client->id;
-        $job->skill_id = $request->input('skill_id'); // Assuming you have a skill_id in the request
-        $job->status = 'pending'; // You can set an initial status
-        $job->save();
-
-        // Notify nearby sellers
-        // Add code to send notifications to nearby sellers (Firebase, Pusher, etc.)
-
-        return response()->json(['message' => 'Job request sent successfully']);
+    foreach ($sellers as $seller) {
+        // Send email to each seller
+        Mail::to($seller->email)->send(new JobRequestEmail($skillId));
     }
+
+    return response()->json(['message' => 'Job request sent successfully']);
+}
+
+
 
 
 

@@ -47,3 +47,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'role:seller'])->group(function () {
     Route::get('/seller-dashboard', [SellerDashboardApiController::class, 'index']);
 });
+// routes/web.php or routes/api.php
+Route::post('/send-job-request', 'ClientDashboardController@sendJobRequest');

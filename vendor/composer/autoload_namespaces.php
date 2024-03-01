@@ -6,4 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'GetStream\\StreamLaravel\\' => array($vendorDir . '/get-stream/stream-laravel/src'),
+    'GetStream\\Stream' => array($vendorDir . '/get-stream/stream/lib'),
 );
