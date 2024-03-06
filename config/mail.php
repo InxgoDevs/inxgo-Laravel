@@ -37,10 +37,10 @@ return [
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
-            'port' => env('MAIL_PORT', 2525),
+            'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('f32fb1ba843b79'),
-            'password' => env('8e2dc14e56fff5'),
+            'username' => env('api'),
+            'password' => env('340a3d9b0da5613f4032279e7e4699fe'),
             'timeout' => null,
             'auth_mode' => null,
         ],
