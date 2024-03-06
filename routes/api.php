@@ -42,8 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Seller Dashboard API routes
-
-
 Route::middleware(['auth:sanctum', 'role:seller'])->group(function () {
     Route::get('/seller-dashboard', [SellerDashboardApiController::class, 'index']);
 });
