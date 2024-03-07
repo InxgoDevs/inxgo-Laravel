@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ServiceApiController;
 use App\Http\Controllers\API\SkillApiController;
 use App\Http\Controllers\API\ClientDashboardApiController;
 use App\Http\Controllers\API\SellerDashboardApiController;
+use App\Http\Controllers\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,10 @@ Route::middleware(['auth:sanctum', 'role:seller'])->group(function () {
 });
 // routes/web.php or routes/api.php
 Route::post('/send-job-request', 'ClientDashboardController@sendJobRequest');
+
+
+
+Route::any('/myjob', [JobController::class, 'myjob']);
+Route::any('/job', [JobController::class, 'store']);
+Route::any('/job/assign', [JobController::class, 'assign']);
+Route::any('/job/status', [JobController::class, 'status']);

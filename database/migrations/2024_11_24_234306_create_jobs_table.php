@@ -18,6 +18,8 @@ class CreateJobsTable extends Migration
             $table->string('title');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('seller_id')->nullable();
+            $table->foreign('seller_id')->references('id')->on('users');
             $table->text('description');
             $table->decimal('price_per_hour', 8, 2);
             $table->string('client_name');

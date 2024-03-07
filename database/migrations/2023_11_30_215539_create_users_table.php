@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_image')->nullable();
             $table->decimal('hourly_rate', 8, 2)->default(0.00);
             $table->text('self_introduction')->nullable();
+            $table->text('fcm_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
            //$table->timestamps();

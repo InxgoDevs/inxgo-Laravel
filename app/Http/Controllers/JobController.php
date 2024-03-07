@@ -8,6 +8,8 @@ use App\Models\User;
 use Kutia\Larafirebase\Facades\Larafirebase;
 use Illuminate\Support\Facades\Auth;
 use Mail;
+use Validator;
+use Response;
 
 class JobController extends Controller 
 {
@@ -20,7 +22,35 @@ class JobController extends Controller
         $paymentBeingClearedJobs = Job::where('status', 'payment_being_cleared')->get();
         return view('jobs.index', compact('jobs','assignedJobs', 'inProgressJobs', 'completedJobs', 'paymentBeingClearedJobs'));
     }
+    public function myjob(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'seller_id' => 'required',
+        ]);
 
+        if ($validator->fails()) { 
+            if(isset($request->api))
+            {
+                return response()->json($validator->messages());
+            } 
+            else
+            {
+                return back()->withErrors($validation)->withInput();
+            }  
+        }
+        $data['aassignedJobs'] = Job::where('seller_id',$request->seller_id)->where('status', 'assigned')->get();
+        $data['inProgressJobs'] = Job::where('seller_id',$request->seller_id)->where('status', 'in_progress')->get();
+        $data['completedJobs'] = Job::where('seller_id',$request->seller_id)->where('status', 'completed')->get();
+        $data['paymentBeingClearedJobs'] = Job::where('seller_id',$request->seller_id)->where('status', 'payment_being_cleared')->get();
+         if(isset($request->api))
+        {
+            return response()->json(['data' => $data]);
+        }
+        else
+        {
+            return view('jobs.index')->with(['data' => $data]);
+        }
+    }
     public function create()
     {
         return view('jobs.create');
@@ -40,14 +70,32 @@ class JobController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'description' => 'required|string',
             'price_per_hour' => 'required|numeric',
             'client_name' => 'required|string',
         ]);
+
+        if ($validator->fails()) { 
+            if(isset($request->api))
+            {
+                return response()->json($validator->messages());
+            } 
+            else
+            {
+                return back()->withErrors($validation)->withInput();
+            }  
+        }
         // Get the authenticated user's ID
-        $userId = auth()->id();
+        if(isset($request->user_id))
+        {
+            $userId = $request->user_id;
+        }
+        else
+        {
+            $userId = auth()->id();
+        }
         Job::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -56,23 +104,66 @@ class JobController extends Controller
             'user_id' => $userId, // Assign the user_id
         ]);
         $this->setNotification($userId,$request->title,$request->message);
-        return redirect()->route('jobs.index')
+        if(isset($request->api))
+        {
+            return response()->json(['success' => 'Job created successfully.']);
+        }
+        else
+        {
+            return redirect()->route('jobs.index')
             ->with('success', 'Job created successfully.');
+        }
     }
     public function setNotification($userId,$title,$message)
     { 
-        $fcmTokens = User::where('id',$userId)->pluck('fcm_token')->toArray();
-        Larafirebase::withTitle($title)
-            ->withBody($message)
-            ->sendMessage($fcmTokens);
-        $data = array('name'=> auth()->user()->name);
-        Mail::send(['text'=>'mail'], $data, function($message) use($data) {
-            $message->to('zainulrauf@gmail.com', 'Inxgo')->subject
-            ('Job Created');
-            $message->from('zainulrauf@gmail.com',$data['name']);
-        });
+        $user=User::where('role','seller')->get();
+        foreach($user as $index)
+        {
+            Larafirebase::withTitle($title)
+                ->withBody($message)
+                ->sendMessage($index->fcm_token);
+            $data = array('name'=> $index->name,'email'=>$index->email,'title'=>$title,'message'=>$message);
+            Mail::send(['text'=>'mail'], $data, function($message) use($data) {
+                $message->to('zainulrauf@gmail.com', 'Inxgo')->subject
+                ('Job Created');
+                $message->from('zainulrauf@gmail.com',$data['name']);
+            });
+        }
     }
+    public function assign(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required',
+            'seller_id' => 'required',
+            'status'=>'required'
+        ]);
+        if ($validator->fails()) { 
+            if(isset($request->api))
+            {
+                return response()->json($validator->messages());
+            } 
+            else
+            {
+                return back()->withErrors($validation)->withInput();
+            }  
+        }
+        Job::where('id',$request->job_id)->update(['seller_id'=>$request->seller_id,'status'=>$request->status]);
+        // $this->setNotification($userId,$request->title,$request->message);
+        if(isset($request->api))
+        {
+            return response()->json(['success' => 'Job '.$request->status.' successfully.']);
+        }
+        else
+        {
+            return redirect()->route('jobs.index')
+            ->with('success', 'Job created successfully.');
+        }
 
+    }
+    public function status()
+    {
+         return response()->json(['assigned','in_progress','completed','payment_being_cleared']);
+    }
     public function show(Job $job)
     {
         return view('jobs.show', compact('job'));
