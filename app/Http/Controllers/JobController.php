@@ -57,7 +57,7 @@ class JobController extends Controller
     }
     public function updateToken(Request $request){
         try{
-            $request->user()->update(['fcm_token'=>$request->token]);
+            // $request->user()->update(['fcm_token'=>$request->token]);
             return response()->json([
                 'success'=>true
             ]);
