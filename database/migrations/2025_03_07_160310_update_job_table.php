@@ -13,7 +13,11 @@ class UpdateJobTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->text('address');
+            $table->string('latitude');
+            $table->string('longitude');
+        });
     }
 
     /**

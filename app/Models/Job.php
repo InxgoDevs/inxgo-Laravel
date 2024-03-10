@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'status', 'total_price', 'price_per_hour','client_id', 'seller_id','client_name','user_id'];
+    protected $fillable = ['title', 'description', 'status', 'total_price', 'price_per_hour','client_id', 'seller_id','client_name','user_id','address','latitude','longitude'];
 
     public function client()
     {

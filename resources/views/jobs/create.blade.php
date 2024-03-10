@@ -18,6 +18,13 @@
 
             <label for="client_name">Client Name:</label>
             <input type="text" name="client_name" id="client_name" required>
+        </br>
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" required>
+            <label for="latitude">Latitude:</label>
+            <input type="text" name="latitude" id="latitude" required>
+            <label for="longitude">Longitude:</label>
+            <input type="text" name="longitude" id="longitude" required>
 
             <button type="submit">Create Job</button>
         </form>

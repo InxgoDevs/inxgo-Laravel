@@ -75,6 +75,9 @@ class JobController extends Controller
             'description' => 'required|string',
             'price_per_hour' => 'required|numeric',
             'client_name' => 'required|string',
+            'address' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         if ($validator->fails()) { 
@@ -101,6 +104,9 @@ class JobController extends Controller
             'description' => $request->description,
             'price_per_hour' => $request->price_per_hour,
             'client_name' => $request->client_name,
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'user_id' => $userId, // Assign the user_id
         ]);
         $this->setNotification($userId,$request->title,$request->message);
