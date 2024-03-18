@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
-       "get-stream/stream-laravel": "~2.3.5",
+        "get-stream/stream-laravel": "~2.3.5",
         "guzzlehttp/guzzle": "^6.0|^7.0",
         "innovareti/password-policy": "*",
         "kreait/firebase-php": "^6.9",
@@ -16,7 +16,8 @@
         "laravel/framework": "*",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "stripe/stripe-php": "^13.14"
     },
 "require-dev": {
 

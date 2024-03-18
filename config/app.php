@@ -164,6 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         
         GetStream\StreamLaravel\StreamLaravelServiceProvider::class,
+        // Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 
 
         /*
@@ -233,7 +234,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-    'FeedManager' => GetStream\StreamLaravel\Facades\FeedManager::class,
+        'FeedManager' => GetStream\StreamLaravel\Facades\FeedManager::class,
+        // 'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
 
     ],
 

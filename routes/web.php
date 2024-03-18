@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\FcmTokenController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MoneySetupController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -32,7 +33,11 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('addmoney/stripe', [MoneySetupController::class, 'PaymentStripe']);
+Route::post('addmoney/stripe', [MoneySetupController::class, 'postPaymentStripe']);
 
+// Route::get('addmoney/stripe', array('as' => 'addmoney.paystripe','uses' => 'MoneySetupController@PaymentStripe'));
+// Route::post('addmoney/stripe', array('as' => 'addmoney.stripe','uses' => 'MoneySetupController@postPaymentStripe'));
 
 Route::middleware(['auth', 'admin'])->group(function () {
     
