@@ -15,6 +15,14 @@ class CreateWalletsTable extends Migration
     {
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->text('card_no')->nullable();
+            $table->mediumInteger('ccExpiryMonth')->nullable();
+            $table->mediumInteger('ccExpiryYear')->nullable();
+            $table->mediumInteger('cvvNumber')->nullable();
+            $table->decimal('amount')->nullable();
+            $table->text('currency')->nullable();
             $table->timestamps();
         });
     }

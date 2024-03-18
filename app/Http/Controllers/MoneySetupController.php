@@ -9,6 +9,7 @@ use Redirect;
 use Input;
 use App\User;
 use Stripe;
+use App\Models\Wallet;
 // use Stripe\Error\Card;
 // use Cartalyst\Stripe\Stripe;
 class MoneySetupController extends Controller
@@ -27,14 +28,20 @@ class MoneySetupController extends Controller
             //'amount' => 'required',
         ]);
         $input = $request->all();
-        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        // Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
     
-        Stripe\Charge::create ([
-                "amount" => 100 * 100,
-                "currency" => "usd",
-                "source" => $request->stripeToken,
-                "description" => "Test payment from itsolutionstuff.com." 
-        ]);
+        // Stripe\Charge::create ([
+        //         "amount" => 100 * 100,
+        //         "currency" => "usd",
+        //         "source" => $request->stripeToken,
+        //         "description" => "Test payment from itsolutionstuff.com." 
+        // ]);
+        $input=$request->all();
+        $input['currency']="pkr";
+        $input['user_id']=1;
+        $input['amount']="100";
+
+        Wallet::create($input);
       
         Session::flash('success', 'Payment successful!');
               

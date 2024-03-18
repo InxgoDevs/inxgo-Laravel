@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Wallet extends Model
 {
     use HasFactory;
+    protected $fillable = [
+    	'user_id',
+		'card_no',
+		'ccExpiryMonth',
+		'ccExpiryYear',
+		'cvvNumber',
+		'amount',
+		'currency',
+    ];
+ 	public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
