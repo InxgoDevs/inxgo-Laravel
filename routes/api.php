@@ -8,6 +8,7 @@ use App\Http\Controllers\API\SkillApiController;
 use App\Http\Controllers\API\ClientDashboardApiController;
 use App\Http\Controllers\API\SellerDashboardApiController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,3 +56,7 @@ Route::any('/myjob', [JobController::class, 'myjob']);
 Route::any('/job', [JobController::class, 'store']);
 Route::any('/job/assign', [JobController::class, 'assign']);
 Route::any('/job/status', [JobController::class, 'status']);
+
+Route::any('/wallet', [WalletController::class, 'store']);
+Route::any('/wallet/seller', [WalletController::class, 'seller']);
+Route::any('/wallet/buyer', [WalletController::class, 'buyer']);
