@@ -115,12 +115,21 @@ class AdminController extends Controller
     public function updateService(Request $request, Service $service)
     {
         // Validate the request
+        if(isset($request->image))
+        {
+            $imagePath = $request->file('image')->store('public/service_image' , 'public');
+            $service->update([
+            'image' => $imagePath,
+            ]);
+        }
+        if(isset($request->title))
+        {
+            $service->update([
+                'title' => $request->title,
+                // Update other service fields as needed
+            ]);
 
-        $service->update([
-            'title' => $request->title,
-            'image' => $request->image,
-            // Update other service fields as needed
-        ]);
+        }
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
     }
