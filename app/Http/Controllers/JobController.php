@@ -91,13 +91,10 @@ class JobController extends Controller
             }  
         }
         // Get the authenticated user's ID
+        $userId=null;
         if(isset($request->user_id))
         {
             $userId = $request->user_id;
-        }
-        else
-        {
-            $userId = auth()->id();
         }
         Job::create([
             'title' => $request->title,
@@ -107,7 +104,7 @@ class JobController extends Controller
             'address' => $request->address,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'user_id' => $userId, // Assign the user_id
+            'user_id' => $userId?$userId:auth()->id(), // Assign the user_id
         ]);
         $this->setNotification($userId,$request->title,$request->message);
         if(isset($request->api))
@@ -120,9 +117,37 @@ class JobController extends Controller
             ->with('success', 'Job created successfully.');
         }
     }
+    public function notification()
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'message' => 'required|string',
+            // 'address' => 'required',
+            // 'latitude' => 'required',
+            // 'longitude' => 'required',
+        ]);
+        $userId=null;
+        if(isset($request->user_id))
+        {
+            $userId=$request->user_id
+        }
+        if ($validator->fails()) {
+            return response()->json($validator->messages()); 
+        }
+        $this->setNotification($userId,$request->title,$request->message);
+        return response()->json(['success' => 'Notification Successfully Sent.!']);
+    }
     public function setNotification($userId,$title,$message)
     { 
-        $user=User::where('role','seller')->get();
+        if($userId)
+        {
+            $user=User::where('id',$userId)->get();
+        }
+        else
+        {
+            $user=User::where('role','seller')->get();
+
+        }
         foreach($user as $index)
         {
             Larafirebase::withTitle($title)

@@ -56,6 +56,7 @@ Route::any('/myjob', [JobController::class, 'myjob']);
 Route::any('/job', [JobController::class, 'store']);
 Route::any('/job/assign', [JobController::class, 'assign']);
 Route::any('/job/status', [JobController::class, 'status']);
+Route::any('/notification/send', [JobController::class, 'notification']);
 
 Route::any('/wallet', [WalletController::class, 'store']);
 Route::any('/wallet/seller', [WalletController::class, 'seller']);
