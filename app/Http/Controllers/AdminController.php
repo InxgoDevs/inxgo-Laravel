@@ -163,13 +163,11 @@ class AdminController extends Controller
             'service_id' => 'required|exists:services,id',
             // Add other skill fields as needed
         ]);
-
-        $imagePath = $request->file('image')->store('public/skill_images');
-        $imageUrl = str_replace('public/', '', $imagePath);
+        $imagePath = $request->file('image')->store('public/skill_image' , 'public');
 
         Skill::create([
             'title' => $request->title,
-            'image' => $imageUrl,
+            'image' => $imagePath,
             'service_id' => $request->service_id,
             // Add other skill fields as needed
         ]);
