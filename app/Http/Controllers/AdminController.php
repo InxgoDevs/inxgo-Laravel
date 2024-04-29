@@ -184,10 +184,16 @@ class AdminController extends Controller
     public function updateSkill(Request $request, Skill $skill)
     {
         // Validate the request
-
+        if(isset($request->image))
+        {
+            $imagePath = $request->file('image')->store('public/skill_image' , 'public');
+            $skill->update([
+            'image' => $imagePath,
+            ]);
+        }
         $skill->update([
             'title' => $request->title,
-            'image' => $request->image,
+            // 'image' => $request->image,
             'service_id' => $request->service_id,
             // Update other skill fields as needed
         ]);

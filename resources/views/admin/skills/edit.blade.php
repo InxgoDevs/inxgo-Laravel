@@ -6,7 +6,7 @@
     <h1>Edit Skill</h1>
 
     <!-- Add your skill edit form here -->
-    <form action="{{ route('admin.skills.update', $skill->id) }}" method="post">
+    <form action="{{ route('admin.skills.update', $skill->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
         <!-- Add form fields for title, image, and service_id with pre-filled values -->

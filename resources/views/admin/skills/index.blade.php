@@ -22,7 +22,7 @@
                 <tr>
                     <td>{{ $skill->title }}</td>
                     <td>
-                        <img src="{{ asset('storage/public/' . $skill->image) }}" style="max-width: 100px; max-height: 100px;">
+                        <img src="{{ asset('storage/' . $skill->image) }}" style="max-width: 100px; max-height: 100px;">
                     </td>
                     <td>{{ $skill->service->title }}</td>
                     <td>
